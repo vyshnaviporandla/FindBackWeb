@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102a43">
+    <meta name="description" content="FindBack helps people report lost and found items and discover possible matches.">
+    <title>FindBack | Lost & Found</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+    <a class="brand" href="#home" aria-label="FindBack home">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>FindBack<span class="brand-dot">.</span><small>LOST & FOUND COMMUNITY</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+        <a href="#browse">Browse reports</a>
+        <a href="#browse" id="myReportsLink">My reports</a>
+        <a href="#report">Submit a report</a>
+    </nav>
+    <a class="header-cta" href="#report">Report an item <span aria-hidden="true">↗</span></a>
+    <button id="accountButton" class="header-account" type="button">Sign in</button>
+    <button id="logoutButton" class="header-logout" type="button" hidden>Sign out</button>
+</header>
+
+<section id="authPanel" class="auth-panel" hidden aria-labelledby="authPanelTitle">
+    <div class="auth-panel-inner">
+        <div class="auth-copy">
+            <p class="eyebrow section-eyebrow">YOUR FINDBACK ACCOUNT</p>
+            <h2 id="authPanelTitle">Welcome back</h2>
+            <p id="authPanelDescription">Sign in to submit reports and manage items you reported.</p>
+        </div>
+        <form id="authForm" class="auth-form">
+            <div id="authNameField" class="auth-form-field" hidden>
+                <label for="authDisplayName">Name</label>
+                <input id="authDisplayName" name="displayName" maxlength="80" autocomplete="name" placeholder="Your name">
+            </div>
+            <div class="auth-form-field">
+                <label for="authEmail">Email</label>
+                <input id="authEmail" name="email" type="email" maxlength="254" required autocomplete="email" placeholder="you@example.com">
+            </div>
+            <div class="auth-form-field">
+                <label for="authPassword">Password</label>
+                <input id="authPassword" name="password" type="password" minlength="8" maxlength="72" required autocomplete="current-password" placeholder="At least 8 characters">
+            </div>
+            <div class="auth-actions">
+                <button id="authSubmitButton" class="button button-primary" type="submit">Sign in</button>
+                <button id="authModeToggle" class="auth-text-button" type="button">New here? Create an account</button>
+                <button id="authCloseButton" class="auth-text-button" type="button">Close</button>
+            </div>
+            <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+        </form>
+    </div>
+</section>
+
+<main id="home">
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> A little help goes a long way</p>
+            <h1>Lost something?<br><span>Let's bring it back.</span></h1>
+            <p class="hero-description">Report a lost or found item, browse community reports, and check possible matches. One small detail could reunite someone with what matters to them.</p>
+            <div class="hero-actions">
+                <a class="button button-light" href="#browse">Explore reports <span aria-hidden="true">-&gt;</span></a>
+                <a class="hero-text-link" href="#report">Submit a report <span aria-hidden="true">-&gt;</span></a>
+            </div>
+            <div class="hero-note"><span aria-hidden="true">*</span> Community-powered. Simple by design.</div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of a found item card" role="img">
+            <div class="art-orbit orbit-one"></div>
+            <div class="art-orbit orbit-two"></div>
+            <div class="floating-tag tag-top"><span class="tag-icon">✓</span><span><b>Possible match</b><small>Worth a closer look</small></span></div>
+            <div class="hero-item-card">
+                <div class="hero-card-top"><span class="found-pill"><span></span> FOUND ITEM</span><span class="sparkle" aria-hidden="true">*</span></div>
+                <div class="bottle-art" aria-hidden="true"><div class="bottle-cap"></div><div class="bottle-body"><div class="bottle-label">FOUND<br><small>WITH CARE</small></div></div></div>
+                <div class="hero-card-info"><span class="mini-label">RECENT COMMUNITY REPORT</span><h3>A little thing, a big relief.</h3><p>Help useful things find their way home.</p></div>
+            </div>
+            <div class="floating-tag tag-bottom"><span class="people-icon" aria-hidden="true">+</span><span><b>Every detail helps</b><small>Name  |  place  |  date</small></span></div>
+            <span class="art-star star-one" aria-hidden="true">*</span><span class="art-star star-two" aria-hidden="true">*</span>
+        </div>
+    </section>
+
+    <section class="quick-stats" aria-label="Report summary">
+        <div class="stat-item"><span class="stat-icon stat-blue" aria-hidden="true">⌕</span><div><strong id="totalReports">—</strong><span>Community reports</span></div></div>
+        <div class="stat-item"><span class="stat-icon stat-green" aria-hidden="true">✓</span><div><strong id="openReports">—</strong><span>Still looking</span></div></div>
+        <div class="stat-item"><span class="stat-icon stat-amber" aria-hidden="true">↗</span><div><strong id="resolvedReports">—</strong><span>Marked resolved</span></div></div>
+        <p class="stats-caption">Small actions. Real-world impact.</p>
+    </section>
+
+    <section class="content-layout" id="browse">
+        <div class="browse-column">
+            <div class="section-heading">
+                <div><p class="eyebrow section-eyebrow">THE COMMUNITY BOARD</p><h2>Explore reports</h2><p class="section-description">Browse reports and check possible matches for items still marked open.</p></div>
+                <button class="button button-outline refresh-button" id="refreshButton" type="button"><span aria-hidden="true">R</span> Refresh</button>
+            </div>
+
+            <div class="filter-panel">
+                <div class="search-wrap"><span aria-hidden="true">⌕</span><label class="sr-only" for="searchInput">Search item or description</label><input id="searchInput" type="search" placeholder="Search item, detail, or keyword…" autocomplete="off"></div>
+                <div class="filter-row">
+                    <div class="filter-field"><label for="typeFilter">Report type</label><select id="typeFilter"><option value="ALL">All reports</option><option value="LOST">Lost items</option><option value="FOUND">Found items</option></select></div>
+                    <div class="filter-field"><label for="categoryFilter">Category</label><select id="categoryFilter"><option value="ALL">All categories</option></select></div>
+                    <div class="filter-field"><label for="locationFilter">Location</label><input id="locationFilter" type="search" placeholder="Any location"></div>
+                    <button class="clear-filters" id="clearFiltersButton" type="button">Clear filters</button>
+                </div>
+            </div>
+
+            <div class="results-line"><p id="resultsSummary">Loading reports…</p><span class="live-indicator"><span></span> LIVE BOARD</span></div>
+            <p id="itemsMessage" class="status-message" role="status" aria-live="polite"></p>
+            <div id="itemsGrid" class="items-grid" aria-live="polite"></div>
+        </div>
+
+        <aside class="report-aside" id="report">
+            <div class="aside-heading"><span class="aside-icon" aria-hidden="true">*</span><div><p class="eyebrow section-eyebrow">HELP THE COMMUNITY</p><h2 id="reportFormTitle">Submit a report</h2></div></div>
+            <p class="aside-intro">A few useful details can help someone recognise their item. Please keep private details out of public descriptions.</p>
+            <form id="reportForm" class="report-form">
+                <div class="form-field"><label for="reportType">I want to <span>*</span></label><select id="reportType" name="reportType" required><option value="LOST">Report something I've lost</option><option value="FOUND">Report something I've found</option></select></div>
+                <div class="form-field"><label for="itemName">Item name <span>*</span></label><input id="itemName" name="itemName" maxlength="100" required placeholder="e.g. Blue water bottle"></div>
+                <div class="form-field"><label for="category">Category <span>*</span></label><select id="category" name="category" required><option value="">Choose a category</option><option>Electronics</option><option>Books &amp; Stationery</option><option>Bags &amp; Accessories</option><option>Clothing</option><option>Keys &amp; Cards</option><option>Bottle</option><option>Documents</option><option>Jewellery</option><option>Other</option></select></div>
+                <div class="form-field"><label for="location">Location <span>*</span></label><input id="location" name="location" maxlength="200" required placeholder="Where was it lost or found?"></div>
+                <div class="form-field"><label for="itemDate">Date</label><input id="itemDate" name="itemDate" type="date"></div>
+                <div class="form-field"><label for="description">Description</label><textarea id="description" name="description" maxlength="1000" rows="3" placeholder="Colour, brand, or other helpful details…"></textarea><small class="field-hint">Avoid sharing phone numbers, addresses, or sensitive identifying details.</small></div>
+                <div class="form-field"><label for="itemPhoto">Item photo <span class="optional-label">OPTIONAL</span></label><label class="upload-zone" for="itemPhoto"><span class="upload-icon" aria-hidden="true">↑</span><span><b>Choose a photo</b><small>JPG, PNG or WebP  |  up to 5 MB</small></span><span class="upload-browse">Browse</span></label><input id="itemPhoto" class="file-input" name="itemPhoto" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photoHelp"><small id="photoHelp" class="field-hint">Only upload a photo you are allowed to share.</small><div id="photoPreviewContainer" class="photo-preview" hidden><img id="photoPreview" alt="Preview of selected item photo"><div class="preview-footer"><span id="photoFileName"></span><button id="removePhotoButton" class="remove-photo" type="button">Remove</button></div></div></div>
+                <button id="submitButton" class="button button-primary submit-button" type="submit">Submit report <span aria-hidden="true">-&gt;</span></button>
+                <button id="cancelEditButton" class="button cancel-edit-button" type="button" hidden>Cancel editing</button>
+                <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+                <p class="privacy-note"><span aria-hidden="true">i</span> Your report will be visible on this community board.</p>
+            </form>
+        </aside>
+    </section>
+</main>
+
+<footer class="site-footer"><a class="footer-brand" href="#home">FindBack<span>.</span></a><p>Helping lost things find their way home.</p><a href="#home" class="back-top">Back to top ↑</a></footer>
+</body>
+</html>
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
